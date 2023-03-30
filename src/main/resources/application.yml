@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: secure-me-authentication
+  profiles:
+    active:
+    - dev
+  config:
+    import:
+    - optional:configserver:http://config:config@localhost:8888
+  datasource:
+    url: jdbc:h2:file:C:/Spring_Boot_Workspace/secure_me
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
