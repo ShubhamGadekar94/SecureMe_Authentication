@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class BeanConfigurer {
 
 	@Bean
-	PasswordEncoder encoder() {
+	PasswordEncoder encoder() { 
 		return new BCryptPasswordEncoder();
 	}
 
