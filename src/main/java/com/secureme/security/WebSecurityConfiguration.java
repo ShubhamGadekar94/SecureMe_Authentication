@@ -10,9 +10,13 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 import com.secureme.service.ApplicationUserDetailsService;
 
@@ -28,23 +32,27 @@ public class WebSecurityConfiguration {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+				.cors().disable()
 			.csrf().disable()
 			.headers().frameOptions().disable()
 			.and()
 			.authorizeHttpRequests()
-			.requestMatchers("/authentication/**", "/h2-console/**").permitAll().anyRequest()
-			.authenticated()
+			.requestMatchers(toH2Console()).permitAll()
+				.requestMatchers("/authentication/**", "/user/register").permitAll()
+				.anyRequest().authenticated()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.httpBasic();
+
+
 		return http.build();
 
 	}
 
 	@Bean
     UserDetailsService userDetailsService() {
-       /* 
+		/*
 		UserDetails user1 = User.withUsername("user1")
             .password(passwordEncoder.encode("user1Pass"))
             .roles("USER")
@@ -58,7 +66,7 @@ public class WebSecurityConfiguration {
             .roles("ADMIN")
             .build();
          return new InMemoryUserDetailsManager(user1,user2,admin);
-         */   
+		*/
 		log.info("user service details");
         return new ApplicationUserDetailsService();
     }

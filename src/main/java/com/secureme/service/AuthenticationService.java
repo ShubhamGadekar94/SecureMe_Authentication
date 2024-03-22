@@ -20,12 +20,20 @@ public class AuthenticationService {
 	private JwtService jwtService;
 
 	public String authenticateUser(JwtAuthenticationModel authenticationModel) {
-		Authentication auththentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				authenticationModel.getUsername(), authenticationModel.getPassword()));
+		Authentication authentication = null;
+		try {
+			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					authenticationModel.getUsername(), authenticationModel.getPassword()));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
-		if (auththentication.isAuthenticated()) {
+
+
+
+		if (authentication.isAuthenticated()) {
 			UserInfoUserDetailsService userDetails = 
-					(UserInfoUserDetailsService) auththentication.getPrincipal();
+					(UserInfoUserDetailsService) authentication.getPrincipal();
 	
 				String token= jwtService.generateToken(userDetails);
 				return token;
