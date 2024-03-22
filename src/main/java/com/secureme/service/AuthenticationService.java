@@ -28,9 +28,6 @@ public class AuthenticationService {
 			e.printStackTrace();
 		}
 
-
-
-
 		if (authentication.isAuthenticated()) {
 			UserInfoUserDetailsService userDetails = 
 					(UserInfoUserDetailsService) authentication.getPrincipal();
