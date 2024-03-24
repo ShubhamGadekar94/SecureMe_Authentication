@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user/register")
+@RequestMapping("/user")
 public class UserRegistrationController {
 
     @Autowired
     private UserRegistrationService UserRegistrationService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRegistration userDetails){
         UserInfo userInfo = UserRegistrationService.registerUser(userDetails);
         return new ResponseEntity<>("OK", HttpStatus.OK);

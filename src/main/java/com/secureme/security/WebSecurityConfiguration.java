@@ -38,7 +38,7 @@ public class WebSecurityConfiguration {
 			.and()
 			.authorizeHttpRequests()
 			.requestMatchers(toH2Console()).permitAll()
-				.requestMatchers("/authentication/**", "/user/register").permitAll()
+				.requestMatchers("/user/authentication/**", "/user/register","/user/validateToken/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
