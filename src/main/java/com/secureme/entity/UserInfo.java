@@ -37,7 +37,7 @@ public class UserInfo implements Serializable{
 	private boolean isEnable;
 
 	@JsonIgnoreProperties(value = "userInfo")
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "User_Roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	Set<Roles> roles = new HashSet<>();

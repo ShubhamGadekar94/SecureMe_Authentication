@@ -1,9 +1,11 @@
 package com.secureme.service;
 
 import com.secureme.dto.UserRegistration;
+import com.secureme.exceptions.UserAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +34,7 @@ public class AuthenticationService {
 			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationModel.getUsername(), authenticationModel.getPassword()));
 		}catch (Exception e){
-			e.printStackTrace();
+			throw new UserAuthenticationException(e.getMessage());
 		}
 
 		if (authentication.isAuthenticated()) {

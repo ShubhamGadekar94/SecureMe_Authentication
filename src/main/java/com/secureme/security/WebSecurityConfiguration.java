@@ -9,6 +9,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,22 +33,17 @@ public class WebSecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-				.cors().disable()
-			.csrf().disable()
-			.headers().frameOptions().disable()
-			.and()
-			.authorizeHttpRequests()
-			.requestMatchers(toH2Console()).permitAll()
-				.requestMatchers("/user/authentication/**", "/user/register","/user/validateToken/**").permitAll()
-				.anyRequest().authenticated()
-			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.httpBasic();
-
-
-		return http.build();
+		return http
+				.csrf(csrf -> csrf.disable())
+				.headers(headers -> headers.frameOptions(frames -> frames.disable()))
+				.authorizeHttpRequests(request ->
+						request.requestMatchers("/user/authentication/**",
+										"/user/register","/user/validateToken/**",
+										"/roles", "/h2-console/**").permitAll()
+								.anyRequest().authenticated())
+				.sessionManagement(session -> session.sessionCreationPolicy(
+						SessionCreationPolicy.STATELESS))
+				.build();
 
 	}
 

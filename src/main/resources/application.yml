@@ -1,14 +1,36 @@
+server:
+  port: 8762
+  ssl:
+    enabled: false
+    bundle: "secureme-auth"
+    enabled-protocols: TLSv1.3
 spring:
   application:
     name: secure-me-authentication
   profiles:
     active:
-    - dev
+      - dev
+  ssl:
+    enabled: true
+    bundle:
+      jks:
+        secureme-auth:
+          key:
+            alias: "secureme-auth"
+          keystore:
+            location: "classpath:secureme-auth.jks"
+            password: "secureme-auth"
+            type: "JKS"
+            provider: "SUN"
+          truststore:
+            location: "classpath:secureme-auth.jks"
+            password: "secureme-auth"
+            type: "JKS"
   config:
     import:
-    - optional:configserver:http://config:config@localhost:8888
+    - optional:configserver:https://config:config@localhost:8888
   datasource:
-    url: jdbc:h2:file:C:/My WorkSpace/Hire_Me_Workspace/secure_me
+    url: jdbc:h2:file:C:/My WorkSpace/Hire_Me_Workspace/secure_me_db
     username: sa
     password: password
   jpa:
@@ -18,5 +40,6 @@ spring:
   h2:
     console:
       enabled: true
+      path: /h2-console
       settings:
         web-allow-others: true

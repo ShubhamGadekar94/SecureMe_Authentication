@@ -21,7 +21,7 @@ public class UserRegistrationController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRegistration userDetails){
         UserInfo userInfo = UserRegistrationService.registerUser(userDetails);
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
 }
